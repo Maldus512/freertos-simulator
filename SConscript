@@ -6,7 +6,6 @@ INCLUDES = ['.','Kernel', 'Kernel/include', 'Kernel/portable/ThirdParty/GCC/Posi
             'Kernel/portabl/ThirdParty/GCC/Posix/utils', 'Demo/Common/include']
 
 Import('freertos_env')
-print(freertos_env['CPPPATH'])
 freertos_env['CPPPATH'] += INCLUDES
 
 sources = Glob('Kernel/*.c') + [File(f) for f in [
