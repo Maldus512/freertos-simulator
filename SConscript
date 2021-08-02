@@ -1,20 +1,18 @@
 import os
 from pathlib import Path
+import platform
 
 LIBRARY = 'freertos-simulator.a'
-INCLUDES = ['.','Kernel', 'Kernel/include', 'Kernel/portable/ThirdParty/GCC/Posix', 
-            'Kernel/portabl/ThirdParty/GCC/Posix/utils', 'Demo/Common/include']
+INCLUDES = ['.','Kernel', 'Kernel/include', 'Demo/Common/include']
 
-Import('freertos_env')
-freertos_env['CPPPATH'] += INCLUDES
-
-sources = Glob('Kernel/*.c') + [File(f) for f in [
+# mingw port
+MINGW_FILES = ["Kernel/portable/MSVC-MingW/port.c"] 
+# posix port
+GCC_FILES = ['Kernel/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c', 'Kernel/portable/ThirdParty/GCC/Posix/port.c']
+COMMON_FILES = [
     'simulator_main.c',
     # Memory manager (use malloc() / free() )
     'Kernel/portable/MemMang/heap_3.c',
-    # posix port
-    'Kernel/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c',
-    'Kernel/portable/ThirdParty/GCC/Posix/port.c',
     # Demo library.
     'Demo/Common/Minimal/AbortDelay.c',
     'Demo/Common/Minimal/BlockQ.c',
@@ -41,7 +39,20 @@ sources = Glob('Kernel/*.c') + [File(f) for f in [
     'Demo/Common/Minimal/StreamBufferInterrupt.c',
     'Demo/Common/Minimal/TaskNotify.c',
     'Demo/Common/Minimal/TimerDemo.c',
-]]
+    ] 
+
+
+if platform.system() == "Windows":
+    files = COMMON_FILES + MINGW_FILES
+    INCLUDES += ['Kernel/portable/MSVC-MingW']
+else:
+    files = COMMON_FILES + GCC_FILES
+    INCLUDES += ['Kernel/portable/ThirdParty/GCC/Posix', 
+            'Kernel/portabl/ThirdParty/GCC/Posix/utils']
+
+Import('freertos_env')
+freertos_env['CPPPATH'] += INCLUDES
+sources = Glob('Kernel/*.c') + [File(f) for f in files]
 
 
 lib = freertos_env.Library(LIBRARY, sources)
