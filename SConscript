@@ -2,8 +2,8 @@ import os
 from pathlib import Path
 import platform
 
-LIBRARY = 'freertos-simulator.a'
-INCLUDES = ['.','Kernel', 'Kernel/include', 'Demo/Common/include']
+LIBRARY = "freertos-simulator.a"
+INCLUDES = [".", "windows_symlinks", "Kernel", "Kernel/include", "Demo/Common/include"]
 
 # mingw port
 MINGW_FILES = ["Kernel/portable/MSVC-MingW/port.c"] 
