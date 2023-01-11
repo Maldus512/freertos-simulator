@@ -396,7 +396,7 @@ void vApplicationGetTimerTaskMemory(StaticTask_t **ppxTimerTaskTCBBuffer, StackT
 
 extern void app_main(void *arg);
 
-int main(void) {
+int __attribute__((weak)) main(void) {
     // console_init();
     // console_print("Starting echo blinky demo\n");
     xTaskCreate(app_main, "Simulator main", 4096 * 2, NULL, 1, NULL);
