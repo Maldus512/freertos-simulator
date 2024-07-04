@@ -101,8 +101,8 @@ volatile uint32_t ulSetToNonZeroInDebuggerToContinue = 0;
 		value. */
 		while( ulSetToNonZeroInDebuggerToContinue == 0 )
 		{
-			__asm volatile( "NOP" );
-			__asm volatile( "NOP" );
+			__asm volatile( "nop" );
+			__asm volatile( "nop" );
 		}
 	}
 	taskEXIT_CRITICAL();
@@ -332,8 +332,8 @@ void vAssertCalled(const char *const pcFileName, unsigned long ulLine) {
         the debugger to set ulSetToNonZeroInDebuggerToContinue to a non-zero
         value. */
         while (ulSetToNonZeroInDebuggerToContinue == 0) {
-            __asm volatile("NOP");
-            __asm volatile("NOP");
+            __asm volatile("nop");
+            __asm volatile("nop");
         }
     }
     taskEXIT_CRITICAL();

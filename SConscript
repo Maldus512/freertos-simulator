@@ -2,7 +2,11 @@ import os
 from pathlib import Path
 import platform
 
-LIBRARY = "freertos-simulator.a"
+def rchop(s, suffix):
+    if suffix and s.endswith(suffix):
+        return s[:-len(suffix)]
+    return s
+
 INCLUDES = [".", "windows_symlinks", "linux_symlinks", "Kernel", "Kernel/include", "Demo/Common/include"]
 
 # mingw port
@@ -54,8 +58,16 @@ Import('freertos_env')
 freertos_env['CPPPATH'] += INCLUDES
 sources = Glob('Kernel/*.c') + [File(f) for f in files]
 
+Import('freertos_suffix')
+if freertos_suffix:
+    LIBRARY = f"freertos-simulator-{freertos_suffix}.a"
+    objects = [freertos_env.Object(
+        f"{rchop(x.get_abspath(), '.c')}-{freertos_suffix}", x) for x in sources]
+else:
+    LIBRARY = f"freertos-simulator.a"
+    objects = sources
 
-lib = freertos_env.Library(LIBRARY, sources)
+lib = freertos_env.Library(LIBRARY, objects)
 
 result = (lib, list(map(lambda x: os.path.join(os.getcwd(), x), INCLUDES)))
 Return('result')
