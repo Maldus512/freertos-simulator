@@ -7,12 +7,14 @@ def rchop(s, suffix):
         return s[:-len(suffix)]
     return s
 
-INCLUDES = [".", "windows_symlinks", "linux_symlinks", "Kernel", "Kernel/include", "Demo/Common/include"]
+INCLUDES = [".", "windows_symlinks", "linux_symlinks",
+            "Kernel", "Kernel/include", "Demo/Common/include"]
 
 # mingw port
-MINGW_FILES = ["Kernel/portable/MSVC-MingW/port.c"] 
+MINGW_FILES = ["Kernel/portable/MSVC-MingW/port.c"]
 # posix port
-GCC_FILES = ['Kernel/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c', 'Kernel/portable/ThirdParty/GCC/Posix/port.c']
+GCC_FILES = ['Kernel/portable/ThirdParty/GCC/Posix/utils/wait_for_event.c',
+             'Kernel/portable/ThirdParty/GCC/Posix/port.c']
 COMMON_FILES = [
     'simulator_main.c',
     # Memory manager (use malloc() / free() )
@@ -43,7 +45,7 @@ COMMON_FILES = [
     'Demo/Common/Minimal/StreamBufferInterrupt.c',
     'Demo/Common/Minimal/TaskNotify.c',
     'Demo/Common/Minimal/TimerDemo.c',
-    ] 
+]
 
 
 if platform.system() == "Windows":
@@ -51,8 +53,8 @@ if platform.system() == "Windows":
     INCLUDES += ['Kernel/portable/MSVC-MingW']
 else:
     files = COMMON_FILES + GCC_FILES
-    INCLUDES += ['Kernel/portable/ThirdParty/GCC/Posix', 
-            'Kernel/portabl/ThirdParty/GCC/Posix/utils']
+    INCLUDES += ['Kernel/portable/ThirdParty/GCC/Posix',
+                 'Kernel/portabl/ThirdParty/GCC/Posix/utils']
 
 Import('freertos_env')
 freertos_env['CPPPATH'] += INCLUDES
